@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+aside {
+    height: calc(100vh - 300px);
+}
