@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import db from "../db";
 import fire from "../fire";
 
 function Addtodo() {
-  const user = fire.auth().currentUser.email;
+  const [useremail, setUseremail] = useState();
   const [firstn, setFirstn] = useState(null);
   const [lastn, setLastn] = useState(null);
   const [todo, setTodo] = useState(null);
   const [date, setDate] = useState(null);
+
+  function getemail() {
+    fire.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        setUseremail(user.email);
+      } else {
+        console.log("failed");
+      }
+    });
+  }
+  getemail();
 
   function getFristn(val) {
     setFirstn(val.target.value);
@@ -28,13 +39,13 @@ function Addtodo() {
     LastName: lastn,
     Todo_Decription: todo,
     Todo_Date: date,
-    User: user,
+    User: useremail,
   };
 
   function postdata(e) {
     e.preventDefault();
     db.post("/todos.json", Data).then((response) => {
-      console.log("Posted");
+      alert("Posted");
     });
   }
 

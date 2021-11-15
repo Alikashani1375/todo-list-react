@@ -1,6 +1,6 @@
-import React from "react";
 import db from "../db";
 import fire from "../fire";
+
 function Fetchedtodos(props) {
   const Data = {
     FirstName: props.fname,

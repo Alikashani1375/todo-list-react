@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import db from "../db";
 import Fetchedtodos from "./Fetchedtodos";
 import fire from "../fire";
@@ -6,9 +6,18 @@ import fire from "../fire";
 class Yourtodos extends React.Component {
   state = {
     results: [],
+    user: { email: "" },
   };
 
   componentDidMount() {
+    fire.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user: this.state.user });
+        console.log("ok");
+      } else {
+        console.log("te");
+      }
+    });
     db.get("/todos.json").then((response) => {
       const fetchedData = [];
       for (let key in response.data) {
@@ -40,7 +49,7 @@ class Yourtodos extends React.Component {
         </div>
 
         {this.state.results
-          .filter((result) => result.User === fire.auth().currentUser.email)
+          .filter((result) => result.User === this.state.user.email)
           .map((result) => (
             <Fetchedtodos
               id={result.id}
